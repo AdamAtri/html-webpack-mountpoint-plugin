@@ -1,8 +1,16 @@
 # html-webpack-mountpoint-plugin
 
 This is a naive utility that adds application mount points to the default html template provided by [`html-webpack-plugin`](https://github.com/jantimon/html-webpack-plugin)
+###### for use with webpack 4
 
 ### Basic Usage
+to install:
+- `npm i html-webpack-mountpoint-plugin --save-dev`  
+or
+- `yarn add html-webpack-mountpoint-plugin -D`
+
+
+
 webpack.config.js
 ```javascript
 
@@ -23,7 +31,7 @@ const HtmlWebpackMountpointPlugin = require('html-webpack-mountpoint-plugin');
 }
 ```
 
-produces: 
+produces:
 index.html
 ```html
 <!DOCTYPE html>
