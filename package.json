@@ -1,0 +1,8 @@
+{
+  "name": "html-webpack-mountpoint-plugin",
+  "version": "0.0.1",
+  "description": "A simple plugin that adds mountpoints to the default template. Intended for use with the html-webpack-plugin.",
+  "main": "index.js",
+  "author": "adam@atricoware.com",
+  "license": "MIT"
+}
