@@ -1,7 +1,6 @@
 # html-webpack-mountpoint-plugin
 
-This is a naive utility that adds application mount points to the default html template provided by [`html-webpack-plugin`](https://github.com/jantimon/html-webpack-plugin)
-###### for use with webpack 4
+This is a naive utility that adds application mount points to the default html template provided by [`html-webpack-plugin`](https://github.com/jantimon/html-webpack-plugin) (use with **webpack4**)
 
 ### Basic Usage
 to install:
