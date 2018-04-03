@@ -4,5 +4,12 @@
   "description": "A simple plugin that adds mountpoints to the default template. Intended for use with the html-webpack-plugin.",
   "main": "index.js",
   "author": "adam@atricoware.com",
-  "license": "MIT"
+  "license": "MIT",
+  "keywords": [
+    "html-webpack-plugin", "webpack", "appMount"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AdamAtri/html-webpack-mountpoint-plugin.git"
+  }
 }
