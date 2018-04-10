@@ -1,7 +1,7 @@
 {
   "name": "html-webpack-mountpoint-plugin",
   "version": "0.0.5",
-  "description": "A simple plugin that adds mountpoints to the default template. Intended for use with the html-webpack-plugin.",
+  "description": "A simple plugin that adds SPA mountpoints to the default template. Intended for use with the html-webpack-plugin.",
   "main": "index.js",
   "author": "adam@atricoware.com",
   "license": "MIT",
@@ -13,5 +13,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/AdamAtri/html-webpack-mountpoint-plugin.git"
+  },
+  "bugs": {
+    "url":"https://github.com/AdamAtri/html-webpack-mountpoint-plugin/issues"
   }
 }
