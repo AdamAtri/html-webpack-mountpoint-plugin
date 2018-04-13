@@ -25,13 +25,31 @@ const HtmlWebpackMountpointPlugin = require('html-webpack-mountpoint-plugin');
     new HtmlWebpackMountpointPlugin({
       tagName: 'section',
       mountPoints: ['app-hook', 'dialogs-hook']
-    })
+    }) ...
+
+    or
+
+    new HtmlWebpackMountpointPlugin([
+      {
+        tagName: 'section',
+        id: 'app-hook',
+        attributes: {
+          className: 'mounted-spa'
+        }
+      },
+      {
+        tagName: 'div',
+        id: 'dialogs-hook',
+        attributes: {
+          className: 'dialogs mounted'
+        }
+      },
+    ])
   ], ...
 }
 ```
 
-produces:
-index.html
+produces:  index.html
 ```html
 <!DOCTYPE html>
 <html>
@@ -42,7 +60,13 @@ index.html
   <body>
     <section id="app-hook"></section>
     <section id="dialogs-hook"></section>
-    <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="src.bundle.js"></script>
+  </body>
+  <!--  or  -->
+  <body>
+    <section id="app-hook" class="spa mount"></section>
+    <div id="dialogs-hook" class="too-cool"></div>
+    <script type="text/javascript" src="src.bundle.js"></script>
   </body>
 </html>
 ```
