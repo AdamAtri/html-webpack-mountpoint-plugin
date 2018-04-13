@@ -34,14 +34,14 @@ const HtmlWebpackMountpointPlugin = require('html-webpack-mountpoint-plugin');
         tagName: 'section',
         id: 'app-hook',
         attributes: {
-          className: 'mounted-spa'
+          className: 'spa mount'
         }
       },
       {
         tagName: 'div',
         id: 'dialogs-hook',
         attributes: {
-          className: 'dialogs mounted'
+          className: 'too-cool'
         }
       },
     ])
