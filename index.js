@@ -4,8 +4,25 @@ module.exports = (function() {
   const PLUGIN = 'HtmlWebpackMountpointPlugin';
 
   function HtmlWebpackMountpointPlugin(options) {
-    this.tagName = options.tagName || 'div';
-    this.mountPoints = options.mountPoints instanceof Array ? options.mountPoints : [options.mountPoints];
+    if (options instanceof Array) {
+      this.mountPoints = options;
+    }
+    else if (typeof options === 'object') {
+      this.mountPoints = options.mountPoints instanceof Array ? options.mountPoints :
+                         typeof options.mountPoints === 'string' ? [options.mountPoints]: null;
+
+      if (! this.mountPoints)
+        throw new Error('"mountPoints" option must be a string or an array of string.');
+      this.mountPoints = this.mountPoints.map(mp => {
+        if (! mp ) return null;
+        return {
+          tagName: options.tagName || 'div',
+          id: mp
+        };
+      }).filter( mp => !!mp);
+    }
+
+
   }
 
   HtmlWebpackMountpointPlugin.prototype.apply = function apply(compiler) {
@@ -20,7 +37,7 @@ module.exports = (function() {
     compilation.hooks.htmlWebpackPluginAlterAssetTags
       .tapAsync(PLUGIN, (htmlPluginData, callback) => {
         if (this.mountPoints.length > 0) {
-          this.addMountPoints(this.mountPoints, this.tagName, htmlPluginData, callback);
+          this.addMountPoints(this.mountPoints, htmlPluginData, callback);
         }
         else {
           callback(null, htmlPluginData);
@@ -28,17 +45,23 @@ module.exports = (function() {
       });
   };
 
-  HtmlWebpackMountpointPlugin.prototype.addMountPoints = function addMountPoints(mpArray, tagName, plugindata, cb) {
+  HtmlWebpackMountpointPlugin.prototype.addMountPoints = function addMountPoints(mpArray, plugindata, cb) {
     const mounts = mpArray.map( mp => ({
-      tagName,
+      tagName: mp.tagName,
       closeTag: true,
-      attributes: {
-        id: mp
-      }
+      attributes: Object.assign({id: mp.id}, this.convertCommon(mp.attributes))
     }));
     plugindata.body = mounts.concat(plugindata.body);
     cb(null, plugindata);
   };
+
+  HtmlWebpackMountpointPlugin.prototype.convertCommon = function convertCommon(attrsObj) {
+    if (!!attrsObj['className']) {
+      attrsObj['class'] = attrsObj.className;
+      delete attrsObj.className;
+    }
+    return attrsObj;
+  }
 
   return HtmlWebpackMountpointPlugin;
 })();
