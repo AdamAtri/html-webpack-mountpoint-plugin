@@ -46,13 +46,18 @@ module.exports = (function() {
   };
 
   HtmlWebpackMountpointPlugin.prototype.addMountPoints = function addMountPoints(mpArray, plugindata, cb) {
-    const mounts = mpArray.map( mp => ({
-      tagName: mp.tagName,
-      closeTag: true,
-      attributes: Object.assign({id: mp.id}, this.convertCommon(mp.attributes))
-    }));
-    plugindata.body = mounts.concat(plugindata.body);
-    cb(null, plugindata);
+    try {
+      const mounts = mpArray.map( mp => ({
+        tagName: mp.tagName,
+        closeTag: true,
+        attributes: Object.assign({id: mp.id}, this.convertCommon(mp.attributes))
+      }));
+      plugindata.body = mounts.concat(plugindata.body);
+      cb(null, plugindata);
+    }
+    catch(e) {
+      cb(e, plugindata);
+    }
   };
 
   HtmlWebpackMountpointPlugin.prototype.convertCommon = function convertCommon(attrsObj) {
