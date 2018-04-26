@@ -31,7 +31,7 @@ module.exports = (function() {
 
   HtmlWebpackMountpointPlugin.prototype.hookHandler = function hookHandler(compilation) {
     if (! compilation.hooks.htmlWebpackPluginAlterAssetTags) {
-      const message = `It looks like we're missing something. Just add html-webpack-plugin first`;
+      const message = "It looks like we're missing something. Just add html-webpack-plugin first";
       throw new Error(message);
     }
     compilation.hooks.htmlWebpackPluginAlterAssetTags
@@ -61,7 +61,7 @@ module.exports = (function() {
   };
 
   HtmlWebpackMountpointPlugin.prototype.convertCommon = function convertCommon(attrsObj) {
-    if (!!attrsObj['className']) {
+    if (attrsObj && attrsObj['className']) {
       attrsObj['class'] = attrsObj.className;
       delete attrsObj.className;
     }
