@@ -7,12 +7,9 @@ module.exports = (function() {
     if (options instanceof Array) {
       this.mountPoints = options;
     }
-    else if (typeof options === 'object') {
+    else if (typeof options.tagName === 'string') {
       this.mountPoints = options.mountPoints instanceof Array ? options.mountPoints :
                          typeof options.mountPoints === 'string' ? [options.mountPoints]: null;
-
-      if (! this.mountPoints)
-        throw new Error('"mountPoints" option must be a string or an array of string.');
       this.mountPoints = this.mountPoints.map(mp => {
         if (! mp ) return null;
         return {
@@ -21,7 +18,14 @@ module.exports = (function() {
         };
       }).filter( mp => !!mp);
     }
+    else if (options.mountPoints instanceof Array)
+      this.mountPoints = options.mountPoints;
 
+    if (options.headTags)
+      this.headTags = options.headTags;
+
+    if (! this.mountPoints )
+      throw new Error('"mountPoints" option must be a string or an array of string.');
 
   }
 
@@ -36,28 +40,47 @@ module.exports = (function() {
     }
     compilation.hooks.htmlWebpackPluginAlterAssetTags
       .tapAsync(PLUGIN, (htmlPluginData, callback) => {
-        if (this.mountPoints.length > 0) {
-          this.addMountPoints(this.mountPoints, htmlPluginData, callback);
-        }
-        else {
+        try {
+          if (this.mountPoints.length > 0) {
+            htmlPluginData = this.addMountPoints(this.mountPoints, htmlPluginData);
+          }
+          if (this.headTags) {
+            htmlPluginData = this.addHeadTags(this.headTags, htmlPluginData);
+          }
           callback(null, htmlPluginData);
         }
+        catch(e) { callback(e, htmlPluginData); }
       });
   };
 
-  HtmlWebpackMountpointPlugin.prototype.addMountPoints = function addMountPoints(mpArray, plugindata, cb) {
-    try {
+  HtmlWebpackMountpointPlugin.prototype.addMountPoints = function addMountPoints(mpArray, plugindata) {
       const mounts = mpArray.map( mp => ({
         tagName: mp.tagName,
         closeTag: true,
         attributes: Object.assign({id: mp.id}, this.convertCommon(mp.attributes))
       }));
       plugindata.body = mounts.concat(plugindata.body);
-      cb(null, plugindata);
-    }
-    catch(e) {
-      cb(e, plugindata);
-    }
+      return plugindata;
+  };
+
+  HtmlWebpackMountpointPlugin.prototype.addHeadTags = function addHeadTags(htArray, plugindata) {
+      const tags = htArray.map( ht => ({
+        tagName: ht.tagName,
+        selfClosingTag: false,
+        attributes: ht.attributes
+      }));
+      plugindata.head = tags.concat(plugindata.head);
+      return plugindata;
+  };
+
+  HtmlWebpackMountpointPlugin.prototype.addMountPoints = function addMountPoints(mpArray, plugindata) {
+      const mounts = mpArray.map( mp => ({
+        tagName: mp.tagName,
+        closeTag: true,
+        attributes: Object.assign({id: mp.id}, this.convertCommon(mp.attributes))
+      }));
+      plugindata.body = mounts.concat(plugindata.body);
+      return plugindata;
   };
 
   HtmlWebpackMountpointPlugin.prototype.convertCommon = function convertCommon(attrsObj) {
