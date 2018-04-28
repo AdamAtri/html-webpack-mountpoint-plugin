@@ -66,7 +66,7 @@ module.exports = (function() {
   HtmlWebpackMountpointPlugin.prototype.addHeadTags = function addHeadTags(htArray, plugindata) {
       const tags = htArray.map( ht => ({
         tagName: ht.tagName,
-        selfClosingTag: false,
+        selfClosingTag: ht.closeTag || false,
         attributes: ht.attributes
       }));
       plugindata.head = tags.concat(plugindata.head);
