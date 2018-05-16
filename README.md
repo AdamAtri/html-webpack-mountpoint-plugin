@@ -70,3 +70,5 @@ produces:  index.html
   </body>
 </html>
 ```
+
+Please post any issues or feature requests to https://github.com/AdamAtri/html-webpack-mountpoint-plugin/issues
